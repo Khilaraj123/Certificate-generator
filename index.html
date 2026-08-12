@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPR Certificate Generator</title>
+    <!-- Clean sans-serif font as requested -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Form -->
+        <aside class="sidebar glass-panel">
+            <header>
+                <h1>Certificate Generator</h1>
+                <p>Fill in the details to generate a CPR certificate instantly.</p>
+            </header>
+            
+            <form id="certForm">
+                <div class="form-group">
+                    <label for="name">Participant Name</label>
+                    <input type="text" id="name" placeholder="e.g. John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Training Date</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="venue">Venue</label>
+                    <input type="text" id="venue" placeholder="e.g. City Community Center" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="certId">Certificate Number</label>
+                    <input type="text" id="certId" placeholder="e.g. CPR-2026-001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainerSign">Trainer Signature (Image)</label>
+                    <input type="file" id="trainerSign" accept="image/png, image/jpeg" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="coordinatorSign">Coordinator Signature (Image)</label>
+                    <input type="file" id="coordinatorSign" accept="image/png, image/jpeg" required>
+                </div>
+            </form>
+
+            <button id="downloadBtn" class="btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download PDF
+            </button>
+        </aside>
+
+        <!-- Main Preview Area -->
+        <main class="preview-area">
+            <div class="preview-wrapper">
+                <div id="certificate" class="certificate-container">
+                    <img src="templates/certificate-bg.png" alt="Certificate Background" class="cert-bg">
+                    
+                    <div class="cert-content">
+                        <!-- Dynamic fields positioned over the background -->
+                        <h2 id="previewName" class="cert-name">Participant Name</h2>
+                        
+                        <div class="cert-details">
+                            <p>has successfully completed the CPR Training at <br><span id="previewVenue" class="highlight">Venue</span> on <span id="previewDate" class="highlight">Date</span>.</p>
+                        </div>
+                        
+                        <div class="cert-meta">
+                            <p>Certificate No: <span id="previewCertId">CPR-YYYY-000</span></p>
+                        </div>
+
+                        <div class="signatures">
+                            <div class="signature-block">
+                                <img id="previewTrainerSign" src="" alt="" class="sig-image">
+                                <div class="sig-line"></div>
+                                <p>Trainer Signature</p>
+                            </div>
+                            <div class="signature-block">
+                                <img id="previewCoordinatorSign" src="" alt="" class="sig-image">
+                                <div class="sig-line"></div>
+                                <p>Coordinator Signature</p>
+                            </div>
+                        </div>
+
+                        <div id="qrcode" class="qr-code"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
