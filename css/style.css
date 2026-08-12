@@ -11,9 +11,12 @@
     --cert-width: 1122px;  /* A4 landscape at 96 DPI */
     --cert-height: 793px;
     
-    /* Certificate specific colors */
-    --cert-text: #1e293b;
-    --cert-highlight: #0f172a;
+    /* Certificate specific colors matching design */
+    --cert-red: #c0392b;
+    --cert-gold: #d4af37;
+    --cert-dark-blue: #1e375a; /* For CPR Training text */
+    --cert-text: #333333;
+    --cert-gray: #666666;
 }
 
 * {
@@ -147,10 +150,6 @@ body {
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
-.btn-primary:active {
-    transform: translateY(0);
-}
-
 /* Preview Area */
 .preview-area {
     flex: 1;
@@ -174,118 +173,311 @@ body {
 .certificate-container {
     width: var(--cert-width);
     height: var(--cert-height);
-    position: relative;
-    background: white;
+    background: #ffffff;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     overflow: hidden;
     transform-origin: center;
+    position: relative;
+    padding: 30px; /* Space outside outer border */
 }
 
-.cert-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Borders matching design */
+.border-outer {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    z-index: 1;
-}
-
-/* Content overlays on top of background */
-.cert-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    border: 3px solid var(--cert-red);
+    padding: 6px;
+    position: relative;
     z-index: 2;
+}
+
+.border-inner {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--cert-gold);
+    padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--cert-text);
+    position: relative;
+    background: white;
+}
+
+/* Background Heartbeat line */
+.bg-heartbeat {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+/* Header */
+.cert-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.header-logo-placeholder svg {
+    width: 40px;
+    height: 40px;
+}
+
+.header-text {
+    text-align: left;
+}
+
+.header-title {
+    font-family: 'Inter', sans-serif;
+    color: var(--cert-red);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.header-subtitle {
+    font-size: 0.75rem;
+    color: var(--cert-gray);
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+/* Title Area */
+.cert-title-area {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cert-type {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--cert-gray);
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.cert-main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--cert-dark-blue);
+    margin-bottom: 10px;
+}
+
+.cert-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cert-red);
+}
+
+/* Participant */
+.cert-participant-area {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cert-presented {
+    font-size: 0.8rem;
+    color: var(--cert-gray);
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
 }
 
 .cert-name {
-    position: absolute;
-    top: 360px; /* Adjusted to sit nicely in the middle */
-    width: 100%;
-    text-align: center;
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: var(--cert-text);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.cert-details {
-    position: absolute;
-    top: 460px;
-    width: 80%;
-    text-align: center;
-    font-size: 1.5rem;
-    line-height: 1.6;
-    color: #475569;
-    font-weight: 400;
-}
-
-.cert-details .highlight {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 3rem;
+    color: var(--cert-red);
     font-weight: 600;
-    color: var(--cert-highlight);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    min-width: 400px;
+    display: inline-block;
 }
 
-.cert-meta {
-    position: absolute;
-    bottom: 60px;
-    left: 80px;
-    font-size: 1rem;
-    color: #64748b;
+/* Description */
+.cert-description {
+    width: 70%;
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--cert-text);
+    margin-bottom: 40px;
+}
+
+.text-red {
+    color: var(--cert-red);
+    font-weight: 600;
+}
+
+/* Three Columns (Date, Venue, Organised By) */
+.cert-three-cols {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 40px;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    padding: 15px 0;
+}
+
+.col {
+    text-align: center;
+    flex: 1;
+}
+
+.col-title {
+    font-size: 0.75rem;
+    color: var(--cert-gray);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.col-value {
+    font-size: 0.95rem;
+    color: var(--cert-text);
     font-weight: 500;
 }
 
-.signatures {
-    position: absolute;
-    bottom: 80px;
-    right: 80px;
+/* Signatures */
+.cert-signatures {
     display: flex;
-    gap: 4rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 85%;
+    margin-bottom: 30px;
 }
 
-.signature-block {
+.sig-block {
+    text-align: center;
+    width: 280px;
+}
+
+.sig-image-container {
+    height: 80px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 180px;
+    justify-content: center;
+    margin-bottom: 5px;
+    position: relative;
 }
 
 .sig-image {
-    height: 60px;
+    max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
-    margin-bottom: 10px;
-    display: none;
+    display: none; /* Shown via JS */
+}
+
+.sig-placeholder-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #cbd5e1;
+    position: absolute;
 }
 
 .sig-line {
     width: 100%;
     height: 1px;
-    background-color: var(--cert-text);
-    margin-bottom: 8px;
+    background-color: var(--cert-dark-blue);
+    margin-bottom: 5px;
 }
 
-.signature-block p {
-    font-size: 0.9rem;
-    font-weight: 600;
+.sig-name {
+    font-size: 0.95rem;
+    font-weight: 700;
     color: var(--cert-text);
-    text-align: center;
 }
 
-.qr-code {
-    position: absolute;
-    top: 60px;
-    right: 80px;
-    width: 100px;
-    height: 100px;
-    padding: 10px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+.sig-role {
+    font-size: 0.7rem;
+    color: var(--cert-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+/* Seal */
+.seal-block {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.seal {
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--cert-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.seal svg {
+    width: 30px;
+    height: 30px;
+}
+
+.seal-text {
+    font-size: 0.6rem;
+    color: var(--cert-gray);
+    letter-spacing: 1px;
+}
+
+/* Footer Supported By */
+.cert-footer {
+    width: 100%;
+    border-top: 1px solid #eaeaea;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+}
+
+.footer-title {
+    font-size: 0.75rem;
+    color: var(--cert-gray);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.footer-logos {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+}
+
+.logo-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px dashed #ccc;
+    background: #f8f9fa;
+}
+
+.footer-logo p {
+    font-size: 0.55rem;
+    color: var(--cert-text);
+    line-height: 1.2;
 }

@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameInput = document.getElementById("name");
     const dateInput = document.getElementById("date");
     const venueInput = document.getElementById("venue");
-    const certIdInput = document.getElementById("certId");
     const trainerSignInput = document.getElementById("trainerSign");
     const coordinatorSignInput = document.getElementById("coordinatorSign");
     const downloadBtn = document.getElementById("downloadBtn");
@@ -12,39 +11,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewName = document.getElementById("previewName");
     const previewDate = document.getElementById("previewDate");
     const previewVenue = document.getElementById("previewVenue");
-    const previewCertId = document.getElementById("previewCertId");
     const previewTrainerSign = document.getElementById("previewTrainerSign");
     const previewCoordinatorSign = document.getElementById("previewCoordinatorSign");
-    
-    // QR Code container
-    const qrcodeContainer = document.getElementById("qrcode");
-    let qrcode = null;
 
-    // Initialize QR Code
-    function generateQRCode(text) {
-        qrcodeContainer.innerHTML = "";
-        qrcode = new QRCode(qrcodeContainer, {
-            text: text || "CPR-CERT",
-            width: 80,
-            height: 80,
-            colorDark : "#0f172a",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
-        });
+    // Helper to add ordinal suffix to date (e.g., 1st, 2nd, 3rd, 4th)
+    function getOrdinalSuffix(i) {
+        const j = i % 10,
+              k = i % 100;
+        if (j == 1 && k != 11) {
+            return i + "st";
+        }
+        if (j == 2 && k != 12) {
+            return i + "nd";
+        }
+        if (j == 3 && k != 13) {
+            return i + "rd";
+        }
+        return i + "th";
     }
 
-    // Format date nicely
+    // Format date nicely: "14th August, 2026"
     function formatDate(dateString) {
         if (!dateString) return "Date";
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        // We use UTC date to avoid timezone issues when selecting the date
         const dateParts = dateString.split('-');
         const date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
-        return date.toLocaleDateString(undefined, options);
+        
+        const day = date.getUTCDate();
+        const month = date.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+        const year = date.getUTCFullYear();
+
+        return `${getOrdinalSuffix(day)} ${month}, ${year}`;
     }
 
     // Set defaults
-    generateQRCode("CPR-YYYY-000");
     previewDate.innerText = formatDate(dateInput.value);
     previewVenue.innerText = venueInput.value || "Venue";
 
@@ -61,29 +60,24 @@ document.addEventListener("DOMContentLoaded", () => {
         previewVenue.innerText = e.target.value || "Venue";
     });
 
-    certIdInput.addEventListener("input", (e) => {
-        const val = e.target.value || "CPR-YYYY-000";
-        previewCertId.innerText = val;
-        generateQRCode(val);
-    });
-
-    // Handle signature uploads (using Blob URLs to preview locally without backend)
+    // Handle signature uploads and hide placeholder text
     function handleImageUpload(fileInput, imgElement) {
         fileInput.addEventListener("change", (e) => {
             const file = e.target.files[0];
+            const placeholder = imgElement.nextElementSibling;
             if (file) {
                 const url = URL.createObjectURL(file);
                 imgElement.src = url;
                 imgElement.style.display = "block";
-                
-                // Allow the image to load before we can potentially revoke it if needed.
-                // Note: html2canvas needs the image to be loaded, so we won't revoke it immediately.
-                imgElement.onload = () => {
-                    // Object URL is ready
-                };
+                if (placeholder && placeholder.classList.contains("sig-placeholder-text")) {
+                    placeholder.style.display = "none";
+                }
             } else {
                 imgElement.style.display = "none";
                 imgElement.src = "";
+                if (placeholder && placeholder.classList.contains("sig-placeholder-text")) {
+                    placeholder.style.display = "block";
+                }
             }
         });
     }
@@ -101,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const certHeight = 793;
         
         // Available space
-        const availWidth = wrapper.clientWidth - 40; // 40px padding
+        const availWidth = wrapper.clientWidth - 40; 
         const availHeight = wrapper.clientHeight - 40;
         
         const scale = Math.min(
@@ -113,28 +107,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.addEventListener("resize", resizePreview);
-    // Initial delay to ensure styles and fonts are applied
     setTimeout(resizePreview, 100);
-    // In case fonts load later
     document.fonts.ready.then(resizePreview);
 
     // Download PDF logic
     downloadBtn.addEventListener("click", () => {
         const certificate = document.getElementById("certificate");
         
-        // Temporarily remove scaling for high-quality, pixel-perfect export
         const originalTransform = certificate.style.transform;
         certificate.style.transform = "scale(1)";
         
-        // Change button state
         const originalText = downloadBtn.innerHTML;
         downloadBtn.innerHTML = "Generating PDF...";
         downloadBtn.disabled = true;
 
-        // Give the DOM a tiny bit of time to apply the transform before capturing
         setTimeout(() => {
             html2canvas(certificate, {
-                scale: 2, // High resolution (retina display quality)
+                scale: 2, 
                 useCORS: true,
                 logging: false,
                 backgroundColor: "#ffffff",
@@ -143,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }).then(canvas => {
                 const imgData = canvas.toDataURL("image/jpeg", 1.0);
                 
-                // A4 landscape in mm
                 const pdf = new jspdf.jsPDF({
                     orientation: 'landscape',
                     unit: 'mm',
@@ -152,13 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 pdf.addImage(imgData, 'JPEG', 0, 0, 297, 210);
                 
-                const filename = certIdInput.value ? `${certIdInput.value}.pdf` : 'certificate.pdf';
+                const filename = nameInput.value ? `${nameInput.value.replace(/\s+/g, '_')}_Certificate.pdf` : 'certificate.pdf';
                 pdf.save(filename);
             }).catch(err => {
                 console.error("Error generating PDF", err);
                 alert("An error occurred while generating the PDF.");
             }).finally(() => {
-                // Restore scaling and button state
                 certificate.style.transform = originalTransform;
                 downloadBtn.innerHTML = originalText;
                 downloadBtn.disabled = false;

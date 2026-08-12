@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CPR Certificate Generator</title>
-    <!-- Clean sans-serif font as requested -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts: Inter for clean text, Playfair Display for elegant serif titles/name -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -37,17 +36,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="certId">Certificate Number</label>
-                    <input type="text" id="certId" placeholder="e.g. CPR-2026-001" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="trainerSign">Trainer Signature (Image)</label>
+                    <label for="trainerSign">President Signature (Image)</label>
                     <input type="file" id="trainerSign" accept="image/png, image/jpeg" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="coordinatorSign">Coordinator Signature (Image)</label>
+                    <label for="coordinatorSign">Dr. Umesh Signature (Image)</label>
                     <input type="file" id="coordinatorSign" accept="image/png, image/jpeg" required>
                 </div>
             </form>
@@ -62,34 +56,123 @@
         <main class="preview-area">
             <div class="preview-wrapper">
                 <div id="certificate" class="certificate-container">
-                    <img src="templates/certificate-bg.png" alt="Certificate Background" class="cert-bg">
                     
-                    <div class="cert-content">
-                        <!-- Dynamic fields positioned over the background -->
-                        <h2 id="previewName" class="cert-name">Participant Name</h2>
-                        
-                        <div class="cert-details">
-                            <p>has successfully completed the CPR Training at <br><span id="previewVenue" class="highlight">Venue</span> on <span id="previewDate" class="highlight">Date</span>.</p>
-                        </div>
-                        
-                        <div class="cert-meta">
-                            <p>Certificate No: <span id="previewCertId">CPR-YYYY-000</span></p>
-                        </div>
-
-                        <div class="signatures">
-                            <div class="signature-block">
-                                <img id="previewTrainerSign" src="" alt="" class="sig-image">
-                                <div class="sig-line"></div>
-                                <p>Trainer Signature</p>
+                    <!-- Certificate Borders -->
+                    <div class="border-outer">
+                        <div class="border-inner">
+                            
+                            <!-- Header -->
+                            <div class="cert-header">
+                                <div class="header-logo-placeholder">
+                                    <!-- Heartbeat svg placeholder -->
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path><polyline points="3 12 7 12 9 8 13 16 15 12 21 12"></polyline></svg>
+                                </div>
+                                <div class="header-text">
+                                    <h3 class="header-title">NEPAL HEART FOUNDATION, JHAPA</h3>
+                                    <p class="header-subtitle">IN ASSOCIATION WITH B&C MEDICAL COLLEGE &middot; CARDIO DEPARTMENT</p>
+                                </div>
                             </div>
-                            <div class="signature-block">
-                                <img id="previewCoordinatorSign" src="" alt="" class="sig-image">
-                                <div class="sig-line"></div>
-                                <p>Coordinator Signature</p>
-                            </div>
-                        </div>
 
-                        <div id="qrcode" class="qr-code"></div>
+                            <!-- Title Area -->
+                            <div class="cert-title-area">
+                                <p class="cert-type">CERTIFICATE OF PARTICIPATION</p>
+                                <h1 class="cert-main-title">CPR Training</h1>
+                                <p class="cert-tagline">Get trained. Save a life. You'll be glad you did.</p>
+                            </div>
+
+                            <!-- Participant Area -->
+                            <div class="cert-participant-area">
+                                <p class="cert-presented">THIS CERTIFICATE IS PROUDLY PRESENTED TO</p>
+                                <h2 id="previewName" class="cert-name">Participant Name</h2>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="cert-description">
+                                <p>for actively participating in the <span class="text-red">CPR (Cardiopulmonary Resuscitation) Training</span> and successfully completing hands-on instruction in emergency cardiac care and life-saving resuscitation techniques.</p>
+                            </div>
+
+                            <!-- Three Columns -->
+                            <div class="cert-three-cols">
+                                <div class="col">
+                                    <p class="col-title">DATE</p>
+                                    <p id="previewDate" class="col-value">14th August, 2026</p>
+                                </div>
+                                <div class="col">
+                                    <p class="col-title">VENUE</p>
+                                    <p id="previewVenue" class="col-value">Purwanchal Cancer Hospital Auditorium</p>
+                                </div>
+                                <div class="col">
+                                    <p class="col-title">ORGANISED BY</p>
+                                    <p class="col-value">Nepal Heart Foundation, Jhapa</p>
+                                </div>
+                            </div>
+
+                            <!-- Signatures -->
+                            <div class="cert-signatures">
+                                <div class="sig-block">
+                                    <div class="sig-image-container">
+                                        <img id="previewTrainerSign" src="" alt="Signature" class="sig-image">
+                                        <p class="sig-placeholder-text">Signature</p>
+                                    </div>
+                                    <div class="sig-line"></div>
+                                    <p class="sig-name">President</p>
+                                    <p class="sig-role">NEPAL HEART FOUNDATION, JHAPA</p>
+                                </div>
+
+                                <div class="seal-block">
+                                    <div class="seal">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path><polyline points="3 12 7 12 9 8 13 16 15 12 21 12"></polyline></svg>
+                                    </div>
+                                    <p class="seal-text">VERIFIED &middot; 2026</p>
+                                </div>
+
+                                <div class="sig-block">
+                                    <div class="sig-image-container">
+                                        <img id="previewCoordinatorSign" src="" alt="Signature" class="sig-image">
+                                        <p class="sig-placeholder-text">Signature</p>
+                                    </div>
+                                    <div class="sig-line"></div>
+                                    <p class="sig-name">Dr. Umesh</p>
+                                    <p class="sig-role">CARDIO DEPARTMENT, B&C MEDICAL COLLEGE</p>
+                                </div>
+                            </div>
+
+                            <!-- Footer Supported By -->
+                            <div class="cert-footer">
+                                <p class="footer-title">SUPPORTED BY</p>
+                                <div class="footer-logos">
+                                    <!-- Using placeholder circles for the 5 logos -->
+                                    <div class="footer-logo">
+                                        <div class="logo-circle"></div>
+                                        <p>Rotary Club of<br>Birtamode Midtown</p>
+                                    </div>
+                                    <div class="footer-logo">
+                                        <div class="logo-circle"></div>
+                                        <p>Rotary Club<br>of Surunga</p>
+                                    </div>
+                                    <div class="footer-logo">
+                                        <div class="logo-circle"></div>
+                                        <p>Rotaract Club<br>of Birtamode</p>
+                                    </div>
+                                    <div class="footer-logo">
+                                        <div class="logo-circle"></div>
+                                        <p>Rotaract Club of<br>Birtamode Mid-Town</p>
+                                    </div>
+                                    <div class="footer-logo">
+                                        <div class="logo-circle"></div>
+                                        <p>Birtamod<br>Run Club</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Subtle background heartbeat curve can be done via css -->
+                            <div class="bg-heartbeat">
+                                <svg width="100%" height="100%" viewBox="0 0 1000 300" preserveAspectRatio="none">
+                                    <polyline points="0,150 150,150 200,50 250,250 300,100 350,200 400,150 1000,150" fill="none" stroke="rgba(200, 0, 0, 0.05)" stroke-width="4"></polyline>
+                                </svg>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
