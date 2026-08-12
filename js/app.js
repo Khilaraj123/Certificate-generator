@@ -33,9 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Set defaults
-    generateQRCode("CPR-YYYY-000");
-
     // Format date nicely
     function formatDate(dateString) {
         if (!dateString) return "Date";
@@ -45,6 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
         return date.toLocaleDateString(undefined, options);
     }
+
+    // Set defaults
+    generateQRCode("CPR-YYYY-000");
+    previewDate.innerText = formatDate(dateInput.value);
+    previewVenue.innerText = venueInput.value || "Venue";
 
     // Live binding events
     nameInput.addEventListener("input", (e) => {
