@@ -1,12 +1,12 @@
 :root {
-    --bg-gradient-1: #0f172a;
-    --bg-gradient-2: #1e1b4b;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --primary-color: #3b82f6;
-    --primary-hover: #2563eb;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --bg-gradient-1: #fff0f1;
+    --bg-gradient-2: #ffe4e6;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(225, 29, 72, 0.2);
+    --primary-color: #e11d48; /* Heart red */
+    --primary-hover: #be123c;
+    --text-main: #1f2937;
+    --text-muted: #4b5563;
     
     --cert-width: 1122px;  /* A4 landscape at 96 DPI */
     --cert-height: 793px;
@@ -64,7 +64,7 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    background: linear-gradient(to right, #60a5fa, #3b82f6);
+    background: linear-gradient(to right, #f43f5e, #be123c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -90,7 +90,7 @@ body {
 .form-group input {
     width: 100%;
     padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.6);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     color: var(--text-main);
@@ -111,18 +111,18 @@ body {
 }
 
 .form-group input[type="file"]::file-selector-button {
-    background: rgba(255,255,255,0.1);
-    border: none;
+    background: rgba(225, 29, 72, 0.1);
+    border: 1px solid rgba(225, 29, 72, 0.2);
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
-    color: var(--text-main);
+    color: var(--primary-color);
     cursor: pointer;
     margin-right: 1rem;
     transition: background 0.2s;
 }
 
 .form-group input[type="file"]::file-selector-button:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(225, 29, 72, 0.2);
 }
 
 .btn-primary {
@@ -195,7 +195,7 @@ body {
     width: 100%;
     height: 100%;
     border: 1px solid var(--cert-gold);
-    padding: 40px;
+    padding: 25px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,7 +219,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .header-logo-placeholder svg {
@@ -249,24 +249,24 @@ body {
 /* Title Area */
 .cert-title-area {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .cert-type {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--cert-gray);
     letter-spacing: 4px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     text-transform: uppercase;
 }
 
 .cert-main-title {
     font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 700;
     color: var(--cert-dark-blue);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .cert-tagline {
@@ -279,21 +279,21 @@ body {
 /* Participant */
 .cert-participant-area {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .cert-presented {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--cert-gray);
     letter-spacing: 2px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     text-transform: uppercase;
 }
 
 .cert-name {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 3rem;
+    font-size: 2.8rem;
     color: var(--cert-red);
     font-weight: 600;
     border-bottom: 1px solid #eee;
@@ -304,12 +304,12 @@ body {
 
 /* Description */
 .cert-description {
-    width: 70%;
+    width: 75%;
     text-align: center;
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.4;
     color: var(--cert-text);
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .text-red {
@@ -322,10 +322,10 @@ body {
     display: flex;
     justify-content: space-between;
     width: 80%;
-    margin-bottom: 40px;
+    margin-bottom: 0; /* Let margin-top: auto on signatures handle the gap */
     border-top: 1px solid #eaeaea;
     border-bottom: 1px solid #eaeaea;
-    padding: 15px 0;
+    padding: 10px 0;
 }
 
 .col {
@@ -352,7 +352,8 @@ body {
     justify-content: space-between;
     align-items: flex-end;
     width: 85%;
-    margin-bottom: 30px;
+    margin-top: auto;
+    margin-bottom: 15px;
 }
 
 .sig-block {
@@ -439,11 +440,11 @@ body {
 .cert-footer {
     width: 100%;
     border-top: 1px solid #eaeaea;
-    padding-top: 15px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: auto;
+    /* margin-top: auto removed as it's now on cert-signatures */
 }
 
 .footer-title {

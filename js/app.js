@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const venueInput = document.getElementById("venue");
     const trainerSignInput = document.getElementById("trainerSign");
     const coordinatorSignInput = document.getElementById("coordinatorSign");
+    const sponsorLogosInput = document.getElementById("sponsorLogos");
     const downloadBtn = document.getElementById("downloadBtn");
 
     // Preview elements
@@ -84,6 +85,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     handleImageUpload(trainerSignInput, previewTrainerSign);
     handleImageUpload(coordinatorSignInput, previewCoordinatorSign);
+
+    // Handle Sponsor Logos Upload
+    if (sponsorLogosInput) {
+        sponsorLogosInput.addEventListener("change", (e) => {
+            const files = Array.from(e.target.files).slice(0, 5); // Max 5 logos
+            const logoContainers = document.querySelectorAll(".footer-logo .logo-circle");
+            
+            // Clear existing uploaded logos first (restore to default circle)
+            logoContainers.forEach(container => {
+                container.innerHTML = "";
+                container.style.border = "1px dashed #ccc";
+                container.style.background = "#f8f9fa";
+            });
+
+            // Add new logos
+            files.forEach((file, index) => {
+                if (index < logoContainers.length) {
+                    const url = URL.createObjectURL(file);
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.style.width = "100%";
+                    img.style.height = "100%";
+                    img.style.objectFit = "contain";
+                    img.style.borderRadius = "50%"; // optional depending on if they want square logos
+                    
+                    const container = logoContainers[index];
+                    container.style.border = "none";
+                    container.style.background = "transparent";
+                    container.appendChild(img);
+                }
+            });
+        });
+    }
 
     // Scale preview to fit screen nicely while maintaining A4 aspect ratio
     function resizePreview() {
